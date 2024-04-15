@@ -307,16 +307,15 @@ savefig("myplot.png")
 
 ```
 
-##
 В результаты получим следующие графики
 
 Случай 1 (рис. 1)
 
-![Случай 1 ](image/image1.png){#fig:002 width=70%}
+![Случай 1](image/image1.png){#fig:002 width=70%}
 
 Случай 2 (рис. 2)
 
-![Случай 2 ](image/image2.png){#fig:002 width=70%}
+![Случай 2](image/image2.png){#fig:002 width=70%}
 
 Случай 3 (рис. 3)
 
