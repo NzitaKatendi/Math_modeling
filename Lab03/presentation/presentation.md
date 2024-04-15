@@ -1,9 +1,12 @@
----
-# Front matter
+## Front matter
 lang: ru-RU
-title: "Отчет по Лабораторной Работе №3"
-subtitle: "Модель боевых действий- Вариант 51"
-author: "Нзита Диатезилуа Катенди"
+title: 
+        Лабораторная работа 3
+subtitle: . Модель боевых действий- Вариант 51
+author: Нзита Диатезилуа Категди
+institute: RUDN University, Moscow, Russian Federation
+date: April 13^th 2024
+
 
 # Formatting
 toc-title: "Содержание"
