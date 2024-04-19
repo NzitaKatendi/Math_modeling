@@ -2,20 +2,28 @@
 # Front matter
 lang: ru-RU
 title: "Отчет по Лабораторной Работе № 7"
-subtitle: " Эффективность рекламы  - Вариант 51"
+subtitle: "Модель распространения рекламы- Вариант 51"
 author: "Нзита Диатезилуа Катенди"
 
-# Formatting
-toc-title: "Содержание"
+## Pdf output format
 toc: true # Table of contents
-toc_depth: 2
-lof: true # List of figures
+toc-depth: 2
 fontsize: 12pt
 linestretch: 1.5
-papersize: a4paper
+papersize: a4
 documentclass: scrreprt
-polyglossia-lang: russian
-polyglossia-otherlangs: english
+## I18n polyglossia
+polyglossia-lang:
+  name: russian
+  options:
+        - spelling=modern
+        - babelshorthands=true
+polyglossia-otherlangs:
+  name: english
+## I18n babel
+babel-lang: russian
+babel-otherlangs: english
+## Fonts
 mainfont: PT Serif
 romanfont: PT Serif
 sansfont: PT Sans
@@ -23,201 +31,160 @@ monofont: PT Mono
 mainfontoptions: Ligatures=TeX
 romanfontoptions: Ligatures=TeX
 sansfontoptions: Ligatures=TeX,Scale=MatchLowercase
-monofontoptions: Scale=MatchLowercase
+monofontoptions: Scale=MatchLowercase,Scale=0.9
+## Biblatex
+biblatex: true
+biblio-style: "gost-numeric"
+biblatexoptions:
+  - parentracker=true
+  - backend=biber
+  - hyperref=auto
+  - language=auto
+  - autolang=other*
+  - citestyle=gost-numeric
+## Pandoc-crossref LaTeX customization
+figureTitle: "Рис."
+tableTitle: "Таблица"
+listingTitle: "Листинг"
+lofTitle: "Цель Работы"
+lotTitle: "Ход Работы"
+lolTitle: "Листинги"
+## Misc options
 indent: true
-pdf-engine: lualatex
 header-includes:
-  - \linepenalty=10 # the penalty added to the badness of each line within a paragraph (no associated penalty node) Increasing the υalue makes tex try to haυe fewer lines in the paragraph.
-  - \interlinepenalty=0 # υalue of the penalty (node) added after each line of a paragraph.
-  - \hyphenpenalty=50 # the penalty for line breaking at an automatically inserted hyphen
-  - \exhyphenpenalty=50 # the penalty for line breaking at an explicit hyphen
-  - \binoppenalty=700 # the penalty for breaking a line at a binary operator
-  - \relpenalty=500 # the penalty for breaking a line at a relation
-  - \clubpenalty=150 # extra penalty for breaking after first line of a paragraph
-  - \widowpenalty=150 # extra penalty for breaking before last line of a paragraph
-  - \displaywidowpenalty=50 # extra penalty for breaking before last line before a display math
-  - \brokenpenalty=100 # extra penalty for page breaking after a hyphenated line
-  - \predisplaypenalty=10000 # penalty for breaking before a display
-  - \postdisplaypenalty=0 # penalty for breaking after a display
-  - \floatingpenalty = 20000 # penalty for splitting an insertion (can only be split footnote in standard LaTeX)
-  - \raggedbottom # or \flushbottom
+  - \usepackage{indentfirst}
   - \usepackage{float} # keep figures where there are in the text
   - \floatplacement{figure}{H} # keep figures where there are in the text
 ---
 
 # Цель работы
 
- Целю данной работы является решение упражнения по эффективности реклами на языке программирования Julia
+Будем рассматривать модель распространения рекламной кампании.  Построим график решения распространения информации о товаре путем платной
+рекламы и с учетом «сарафанного радио».
 
 # Задание
 
-Постройте график распространения рекламы, математическая модель которой описывается следующим уравнением:
- 
-1. dn/dt = (0.7 + 0.000012*n(t))*(N - n(t))
-2. dn/dt = (0.00003 + 0.5*n(t))*t(N - n(t))
-3. dn/dt = (0.57sin(t) - 0.38cos(13t))*(N -  n(t))
+1. Построить график распространения рекламы о салоне красоты
 
-При этом объем аудитории N =1420 , в начальный момент о товаре знает 12 человек. Для случая 2 определите в какой момент времени скорость распространения рекламы будет иметь максимальное значение.
+2. Сравнить эффективность рекламной кампании при $\alpha_1(t) > \alpha_2(t)$ и $\alpha_1(t) < \alpha_2(t)$
+
+3. Определить в какой момент времени эффективность рекламы будет иметь максимально быстрый рост (на вашем примере).
 
 # Выполнение лабораторной работы
 
-Модель рекламной кампании описывается следующими величинами.
+## Теоретические сведения
 
-Считаем, что dn/dt - скорость изменения со временем числа потребителей, узнавших о товаре и готовых его купить, t - время, прошедшее с начала рекламной кампании, n(t) - число уже информированных клиентов. Эта величина пропорциональна числу покупателей, еще не знающих о нем, это описывается следующим образом:
+Организуется рекламная кампания нового товара или услуги. Необходимо, чтобы прибыль будущих продаж с избытком покрывала издержки на рекламу. Вначале расходы могут превышать прибыль, поскольку лишь малая часть потенциальных покупателей будет информирована о новинке. Затем, при увеличении числа продаж, возрастает и прибыль, и, наконец, наступит момент, когда рынок насытиться, и рекламировать товар станет бесполезным.
 
-a1(t)(N - n(t)), где N - общее число потенциальных платежеспособных покупателей, a1(t) - характеризует интенсивность рекламной кампании (зависит от затрат на рекламу в данный момент времени).
+Модель рекламной кампании описывается следующими величинами. Считаем, что $\frac{dn}{dt}$ - скорость изменения со временем числа потребителей, узнавших о товаре и готовых его купить, t - время, прошедшее с начала рекламной кампании, $n(t)$ - число уже информированных клиентов. Эта величина пропорциональна числу покупателей, еще не знающих о нем, это описывается следующим образом: $\alpha_1(t)(N- n(t))$, где N - общее число потенциальных платежеспособных покупателей, $\alpha_1(t) > 0$ - характеризует интенсивность рекламной кампании (зависит от затрат на рекламу в данный момент времени).
 
-Помимо этого, узнавшие о товаре потребители также распространяют полученную информацию среди потенциальных покупателей, не знающих о нем (в этом случае работает т.н. сарафанное радио). Этот вклад в рекламу описывается величиной a2(t)n(t)(N - n(t)), эта величина увеличивается с увеличением потребителей узнавших о товаре. Математическая модель распространения рекламы описывается уравнением:
 
-dn/dt = (a1(t) - a2(t)n(t))(N - n(t))
+Помимо этого, узнавшие о товаре потребители также распространяют полученную информацию среди потенциальных покупателей, не знающих о нем (в этом случае работает т.н. сарафанное радио). Этот вклад в рекламу описывается величиной $\alpha_2(t) n(t) (N- n(t))$, эта величина увеличивается с увеличением потребителей узнавших о товаре. Математическая модель распространения рекламы описывается уравнением:
 
-## Условие задачи
 
-# Параметры модели
+$\frac{dn}{dt} = (\alpha_1(t) + \alpha_2(t) n(t)) (N- n(t))$
+ 
 
-const N = 1420
-const k = 0.5
-const a = 0.00003
+При $\alpha_1(t) > \alpha_2(t)$ получается модель типа модели Мальтуса.
+
+
+В обратном случае, при получаем уравнение логистической кривой.
+
+
+## Задача
+
+Постройте график распространения рекламы, математическая модель которой описывается
+следующим уравнением:
+
+1. $\frac{dn}{dt} = (0.7 + 0.000012 n(t)) (N- n(t))$ 
+
+![График распространения рекламы №1 (Julia)](image/image1.jpg){ #fig:001 width=70% }
+
+2. $\frac{dn}{dt} = (0.00003 + 0.5 n(t)) (N- n(t))$
+
+![График распространения рекламы №2 (Julia)](image/image2.jpg){ #fig:002 width=70% }
+
+**Момент времени в который скорость распространения рекламы будет иметь максимальное значение = 0.06216763889523805**
+
+3. $\frac{dn}{dt} = (0.57sin(t) + 0.38\cos(13t) n(t)) (N- n(t))$
+
+![График распространения рекламы №3 (Julia)](image/image3.jpg){ #fig:003 width=70% }
 
 ## Код программы (Julia)
 
-#Функция правой части дифференцииального уравнения
+```julia
+using Plots
+using DifferentialEquations
+using Roots
 
-function f(du, u, p, t)
-    du[1] = (a + k * u[1]) * (N - u[1])
+n0 = 12; #количество людей, знающих о товаре в начальный момент времени
+N = 1420; #максимальное количество людей, которых может заинтересовать товар
+t = (0, 30) #временной промежуток (длительность рекламной компании)
+
+#ПЕРВЫЙ СЛУЧАЙ
+
+a1 = 0.7
+a2 = 0.000012
+
+# уравнение, описывающее распространение рекламы
+function F(n, p, t)
+    dn = (a1 + a2*n)*(N - n)
+    return dn;
 end
 
-#Налальное условие
+prob = ODEProblem(F, n0, t)
+sol = solve(prob)
 
-u0 = [12.0]
-
-
-#Решение  дифференцииального уравнения
-
-prob = ODEProblem(f, u0, tspan)
-sol = solve(prob, Tsit5())
-    
-#график распространения рекламы
-
-plot(sol, xlabel = "Время" , ylabel = "Чмсло людей, знающих о товаре", 
-            title = "Распространение рекламы", label = "n(t)")
+plot(sol, xlabel="time", ylabel="Number of buyers", title="График распространения рекламы №1")
 
 
-#определите в какой момент времени скорость распространения рекламы будет иметь максимальное значение.
+#ВТОРОЙ СЛУЧАЙ
+t = (0, 1) #временной промежуток (длительность рекламной компании)
+a1 = 0.000012
+a2 = 0.7
 
-speed = (a .+ k  .* sol.u[1]) .* (N .- sol.u[1])
-max_speed_index = argmax(speed)
-max_speed_time = sol.t[max_speed_index]
-
-println(" Момент времени, когда скорость распространения рекламы будет иметь максимальное: ", max_speed_time)
-
-# Временной прамежуток
-
-
-tspan = (0.0 , 100.0)
-
-# Первый случай
-
-# Параметры модели
-
-const N = 1420
-const k = 0.000012
-const a = 0.7
-
-#график распространения рекламы
-
-plot(sol, xlabel = "Время" , ylabel = "Чмсло людей, знающих о товаре", 
-            title = "Распространение рекламы", label = "n(t)")
-
-# Второй случай
-
-# Параметры модели
-
-#Функция правой части дифференцииального уравнения
-
-function f(du, u, p, t)
-    du[1] = (a + k * u[1]) * (N - u[1])
+# уравнение, описывающее распространение рекламы
+function F(n, p, t)
+    dn = (a1 + a2*n)*(N - n)
+    return dn;
 end
 
-#Налальное условие
+prob = ODEProblem(F, n0, t)
+sol = solve(prob)
 
-u0 = [12.0]
+print("Момент времени в который скорость распространения рекламы будет иметь максимальное значение = ", find_zero(t->sol(t) - N, 0))
 
-#Времия
+plot(sol, xlabel="time", ylabel="Number of buyers", title="График распространения рекламы №2")
 
-tspan = (0.0 , 100.0)
-
-#Решение  дифференцииального уравнения
-
-prob = ODEProblem(f, u0, tspan)
-sol = solve(prob, Tsit5())
-
-
-const N = 1420
-const k = 0.5
-const a = 0.00003
-
-plot(sol, xlabel = "Время" , ylabel = "Чмсло людей, знающих о товаре", 
-            title = "Распространение рекламы", label = "n(t)")
-
-# Третьй случай
-
-# Параметры модели
-
-const N = 1420
-const k = 0.38
-const a = 0.57
-
-function f(du, u, p, t)
-    du[1] = (a * sin(t) + k * cos(13 * t)) * (N - u[1])
+#ТРЕТИЙ СЛУЧАЙ
+t = (0, 1000) #временной промежуток (длительность рекламной компании)
+#Функция, отвечающая за платную рекламу
+function A1(t)
+    return 0.57*sin(t)
 end
 
-#Налальное условие
+#функция, описывающая сарафанное радио
+function A2(t)
+    return 0.38*cos(13*t)
+end
 
-u0 = [12.0]
+# уравнение, описывающее распространение рекламы
+function F(n, p, t)
+    dn = (A1(t) + A2(t)*n)*(N - n)
+    return dn;
+end
 
-#Времия
+prob = ODEProblem(F, n0, t)
+sol = solve(prob)
 
-tspan = (0.0 , 30.0)
+plot(sol, xlabel="time", ylabel="Number of buyers", title="График распространения рекламы №3")
 
-#Решение  дифференцииального уравнения
-
-prob = ODEProblem(f, u0, tspan)
-sol = solve(prob, Tsit5(), reltol = 1e-8, abstol = 1e-8)
-
-plot(sol, xlabel = "Время" , ylabel = "Чмсло людей, знающих о товаре", 
-            title = "Распространение рекламы", label = "n(t)")
-
-#определите в какой момент времени скорость распространения рекламы будет иметь максимальное значение.
-
-times = sol.t
-n_values = sol[1, :]
-
-#Расчет производной корость распространения рекламы числено
-
-du_dt = diff(n_values) ./diff(times)
-
-# Поиск максимальной скорости и соответсвцюшего времени
-
-max_speed = maximum(du_dt)
-max_speed_index = argmax(du_dt)
-max_speed_time = sol.t[max_speed_index]
-
-println(" Момент времени, когда скорость распространения рекламы будет иметь максимальное: ", max_speed_time)
-
-## Решение
-
-![ Первая Случая когда (Julia)](image/image1.png){ #fig:002 width=70% height=70% }
-
-![ Второя Случая когда (Julia)](image/image2.png){ #fig:004 width=70% height=70% }
-
-![ третья Случая когда (Julia)](image/image3.png){ #fig:004 width=70% height=70% }
-
+```
 
 # Выводы
 
-Сделан вывод,  что с помощью языка програмирования Julia удалось решить задачу, связанную с эффективностю рекламы где мы увидели три ситуации и смогли простроить график распространения информации о товаре, приняв их во внимвние счет. Платная реклама м с учетом сарафанного радио.
+В результате проделанной лабораторной работы мы познакомились с моделем распространения рекламной кампании. Проверили, как работает модель в различных ситуациях, построили графики распрострения рекламы при данных условиях.
 
-# Список литературы {.unnumbered}
+# Список литературы
 
-1. [Эффективность рекламы ](https://esystem.rudn.ru/mod/resource/view.php?id=1100272)
+1. [Модель распространения рекламной кампании](https://anylogic.help/ru/tutorials/system-dynamics/12-promotion-strategy.html)
