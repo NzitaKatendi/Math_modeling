@@ -109,9 +109,9 @@ $$
 
 $$
  \begin{cases}
-	\frac{dx}{dt}= -0.45x(t) - 0.55y(t) + sin(t + 15)
+	\frac{dx}{dt}= -0.441x(t) - 0.773y(t) + sin(2t) + 1
 	\\   
-	\frac{dy}{dt}= -0.58x(t) - 0.45y(t) + cos(t + 3)
+	\frac{dy}{dt}= -0.55x(t) - 0.664y(t) + cos(3t) + 1
  \end{cases}
 $$
 
@@ -125,9 +125,9 @@ $$
 
 $$
  \begin{cases}
-	\frac{dx}{dt}= -0.37(t) - 0.67y(t) + sin(7t) + 1
+	\frac{dx}{dt}= -0.399(t) - 0.688y(t) + sin(2t) + 2
 	\\   
-	\frac{dy}{dt}= -0.57x(t)y(t) - 0.39y(t) + cos(8t) + 1
+	\frac{dy}{dt}= -0.299x(t)y(t) - 0.811y(t) + cos(3t) + 1
  \end{cases}
 $$
 
