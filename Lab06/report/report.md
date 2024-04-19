@@ -1,21 +1,29 @@
 ---
 # Front matter
 lang: ru-RU
-title: "Отчет по Лабораторной Работе №2"
-subtitle: "Задача о погоне - Вариант 51"
+title: "Отчет по Лабораторной Работе № 6"
+subtitle: "Модель эпидемии - Вариант 51"
 author: "Нзита Диатезилуа Катенди"
 
-# Formatting
-toc-title: "Содержание"
+## Pdf output format
 toc: true # Table of contents
-toc_depth: 2
-lof: true # List of figures
+toc-depth: 2
 fontsize: 12pt
 linestretch: 1.5
-papersize: a4paper
+papersize: a4
 documentclass: scrreprt
-polyglossia-lang: russian
-polyglossia-otherlangs: english
+## I18n polyglossia
+polyglossia-lang:
+  name: russian
+  options:
+        - spelling=modern
+        - babelshorthands=true
+polyglossia-otherlangs:
+  name: english
+## I18n babel
+babel-lang: russian
+babel-otherlangs: english
+## Fonts
 mainfont: PT Serif
 romanfont: PT Serif
 sansfont: PT Sans
@@ -23,178 +31,138 @@ monofont: PT Mono
 mainfontoptions: Ligatures=TeX
 romanfontoptions: Ligatures=TeX
 sansfontoptions: Ligatures=TeX,Scale=MatchLowercase
-monofontoptions: Scale=MatchLowercase
+monofontoptions: Scale=MatchLowercase,Scale=0.9
+## Biblatex
+biblatex: true
+biblio-style: "gost-numeric"
+biblatexoptions:
+  - parentracker=true
+  - backend=biber
+  - hyperref=auto
+  - language=auto
+  - autolang=other*
+  - citestyle=gost-numeric
+## Pandoc-crossref LaTeX customization
+figureTitle: "Рис."
+tableTitle: "Таблица"
+listingTitle: "Листинг"
+lofTitle: "Цель Работы"
+lotTitle: "Ход Работы"
+lolTitle: "Листинги"
+## Misc options
 indent: true
-pdf-engine: lualatex
 header-includes:
-  - \linepenalty=10 # the penalty added to the badness of each line within a paragraph (no associated penalty node) Increasing the υalue makes tex try to haυe fewer lines in the paragraph.
-  - \interlinepenalty=0 # υalue of the penalty (node) added after each line of a paragraph.
-  - \hyphenpenalty=50 # the penalty for line breaking at an automatically inserted hyphen
-  - \exhyphenpenalty=50 # the penalty for line breaking at an explicit hyphen
-  - \binoppenalty=700 # the penalty for breaking a line at a binary operator
-  - \relpenalty=500 # the penalty for breaking a line at a relation
-  - \clubpenalty=150 # extra penalty for breaking after first line of a paragraph
-  - \widowpenalty=150 # extra penalty for breaking before last line of a paragraph
-  - \displaywidowpenalty=50 # extra penalty for breaking before last line before a display math
-  - \brokenpenalty=100 # extra penalty for page breaking after a hyphenated line
-  - \predisplaypenalty=10000 # penalty for breaking before a display
-  - \postdisplaypenalty=0 # penalty for breaking after a display
-  - \floatingpenalty = 20000 # penalty for splitting an insertion (can only be split footnote in standard LaTeX)
-  - \raggedbottom # or \flushbottom
+  - \usepackage{indentfirst}
+  - \usepackage{mathtools}
   - \usepackage{float} # keep figures where there are in the text
   - \floatplacement{figure}{H} # keep figures where there are in the text
 ---
 
+
 # Цель работы
 
-Рассмотрим задачу преследования браконьеров береговой охраной. На море в тумане катер береговой охраны преследует лодку браконьеров. Через определенный промежуток времени туман рассеивается, и лодка обнаруживается на расстоянии k км от катера. Затем лодка снова скрывается в тумане и уходит прямолинейно в неизвестном направлении.
-Необходимо определить по какой траектории необходимо двигаться катеру, чтоб нагнать лодку.
+Рассмотрим простейшую модель эпидемии. Предположим, что некая популяция, состоящая из N особей, (считаем, что популяция изолирована) подразделяется на три группы. Первая группа - это восприимчивые к болезни, но пока здоровые особи, обозначим их через $S(t)$. Вторая группа – это число инфицированных особей, которые также при этом являются распространителями инфекции, обозначим их $I(t)$. А третья группа, обозначающаяся через $R(t)$ – это здоровые особи с иммунитетом к болезни. 
 
 
 # Задание
 
-1. Запишите уравнение, описывающее движение катера, с начальными условиями для двух случаев (в зависимости от расположения катера относительно лодки в начальный момент времени).
-2. Постройте траекторию движения катера и лодки для двух случаев.
-3. Найдите точку пересечения траектории катера и лодки 
+Постройте графики изменения числа особей в каждой из трех групп.
+
+Рассмотрите, как будет протекать эпидемия в случае:
+
+1. если $I(0) \leq I^{*}$
+
+2. если  $I(0) > I^{*}$
 
 # Выполнение лабораторной работы
 
-Принимаем за $t_0=0, X_0=0$  - место нахождения лодки браконьеров в момент обнаружения, $X_0=k$   - место нахождения катера береговой охраны относительно лодки браконьеров в момент обнаружения лодки.
+## Теоретические сведения
 
-Введем полярные координаты. Считаем, что полюс - это точка обнаружения лодки браконьеров $x_0=0 (\theta=x_0=0)$, а полярная ось r проходит через точку нахождения катера береговой охраны.
+До того, как число заболевших не превышает критического значения $I^{\ast}$, считаем, что все больные изолированы и не заражают здоровых. Когда $I(t) > I^{\ast}$, тогда инфицирование способны заражать восприимчивых к болезни особей. Таким образом, скорость изменения числа $S(t)$ меняется по следующему закону:
 
-Чтобы найти расстояние $x$ (расстояние после которого катер начнет двигаться вокруг полюса), необходимо составить простое уравнение. Пусть через время $t$ катер и лодка окажутся на одном расстоянии $x$ от полюса. За это время лодка пройдет $x$, а катер $x-k$ (или $x+k$, в зависимости от начального положения катера относительно полюса). Время, за которое они пройдут это расстояние, вычисляется как $\frac{x}{υ}$ или $\frac{x+k}{υ}$ (для второго случая $\frac{x-k}{υ}$).  Так как время одно и то же, то эти величины одинаковы. Тогда неизвестное расстояние можно найти из следующего уравнения:  $\frac{x}{υ} = \frac{x+k}{υ}$ - в первом случае, $\frac{x}{υ} =  \frac{x-k}{υ}$ во втором случае.
+$$\frac{dS}{dt}= \begin{cases} -aS, & \text{если }  I(t) > I^{\ast} \\\\ 0, & \text{если } I(t) \leq I^{\ast}\end{cases}$$
 
-Отсюда мы найдем два значения $x_1$ и $x_2$, задачу будем решать для двух случаев. 
 
-$x_1=\frac{k}{n+1}$ ,при $\theta=0$
+Поскольку каждая восприимчивая к болезни особь, которая, в конце концов, заболевает, сама становится инфекционной, то скорость изменения числа инфекционных особей представляет разность за единицу времени между заразившимися и теми, кто уже болеет и лечится, т.е.:
 
-$x_2=\frac{k}{n-1}$ ,при $\theta=-\pi$
+$$\frac{dI}{dt} = \begin{cases} aS- bI, & \text{если }  I(t) > I^{\ast}\\\\ -bI, & \text{если } I(t) \leq I^{\ast} \end{cases}$$
 
-После того, как катер береговой охраны окажется на одном расстоянии от полюса, что и лодка, он должен сменить прямолинейную траекторию и начать двигаться вокруг полюса удаляясь от него со скоростью лодки $υ$. Для этого скорость катера раскладываем на две составляющие: $υ_r$ - радиальная скорость и $υ_t$- тангенциальная скорость. Радиальная скорость - это скорость, с которой катер удаляется от полюса $υ_r=\frac{dr}{dt}$. Нам нужно, чтобы эта скорость была равна скорости лодки, поэтому полагаем $υ=\frac{dr}{dt}$.
-Тангенциальная скорость – это линейная скорость вращения катера относительно полюса. Она равна произведению угловой скорости $\frac{d\theta}{dt}$  на радиус $r$, $υr=r\frac{d\theta}{dt}$
-Найдем тангенциальную скорость для нашей задачи $υ_t=r\frac{d\theta}{dt}$.
-Вектора образуют прямоугольный треугольник, откуда по теореме Пифагора можно найти тангенциальную скорость $υ_t= \sqrt{n^2 υ_r^2-v^2}$. Поскольку, радиальная скорость равна $υ$, то тангенциальную скорость находим из уравнения $υ_t= \sqrt{n^2 υ^2-υ^2 }$. Следовательно, $υ_τ=υ\sqrt{n^2-1}$.
+А скорость изменения выздоравливающих особей (при этом приобретающие иммунитет к болезни)
 
-Тогда получаем $r\frac{d\theta}{dt}=υ\sqrt{n^2-1}$
+$$\frac{dR}{dt} = bI$$
 
-Решение исходной задачи сводится к решению системы из двух дифференциальных уравнений 
+> :memo: **Note:** Постоянные пропорциональности $a$, $b$ , - это коэффициенты заболеваемости и выздоровления соответственно.
 
-$$
- \begin{cases}
-   \frac{dr}{dt}=υ
-	\\   
-	r\frac{d\theta}{dt}=υ\sqrt{n^2-1}
- \end{cases}
-$$
 
-с начальными условиями
+## Задача
 
-$$
- \begin{cases}
-   \theta_0=0
-   \\
-	r_0=\frac{k}{n+1}
- \end{cases}
-\
-$$
+На одном острове вспыхнула эпидемия. Известно, что из всех проживающих на острове $N=8 124$ в момент начала эпидемии $t=0$ число заболевших людей (являющихся распространителями инфекции) $I(0)=124$, А число здоровых людей с иммунитетом к болезни $R(0)=30$. Таким образом, число людей восприимчивых к болезни, но пока здоровых, в начальный момент времени $S(0)=N-I(0)- R(0)$.
 
-Или 
 
-$$
- \begin{cases}
-   \theta_0=-\pi
-   \\
-	r_0=\frac{k}{n-1}
- \end{cases}
-\
-$$
+Постройте графики изменения числа особей в каждой из трех групп.
+Рассмотрите, как будет протекать эпидемия в случае:
+1. если $I(0) \leq I^{\ast}$
 
-Исключая из полученной системы производную по t, можно перейти к следующему уравнению: $\frac{dr}{d\theta}=\frac{r}{\sqrt{n^2-1}}$
+![Динамика изменения числа людей 1 (Julia)](image/image1.png ){ #fig:001 width=70% }
 
-Начальные условия остаются прежними. Решив это уравнение, мы получим траекторию движения катера в полярных координатах. Теперь, когда нам известно все, что нам нужно, построим траекторию движения катера и лодки для двух случаев. 
+2. если  $I(0) > I^{\ast}$
 
-## Условие задачи
+![Динамика изменения числа людей 2 (Julia)](image/image2.png){ #fig:002 width=70% }
 
-На море в тумане катер береговой охраны преследует лодку браконьеров.
-Через определенный промежуток времени туман рассеивается, и лодка
-обнаруживается на расстоянии 17,3 км от катера. Затем лодка снова скрывается в
-тумане и уходит прямолинейно в неизвестном направлении. Известно, что скорость
-катера в 5,1 раза больше скорости браконьерской лодки.
 
 ## Код программы (Julia)
 
-```
+```julia
 using Plots
 using DifferentialEquations
 
-n = 5.1
-s = 17.3
-fi = 3*(pi/4)
+a = 0.01; # коэффициент заболеваемости
+b = 0.02; # коэффициент выздоровления
+N = 8 124; # общая численность популяции
+I0 = 124; # количество инфицированных особей в начальный момент времени
+R0 = 30; # количество здоровых особей с иммунитетом в начальныймомент времени
+S0 = N - I0 - R0; # количество восприимчивых к болезни особей в начальный момент времени
+
+x0 = [S0;I0;R0]; #начальные значения
+t = (0,200);
+
+#ПЕРВЫЙ СЛУЧАЙ
 
 
-function f(r, p, t)
-    dr = r/ sqrt(n^2 - 1)
-    return dr
+# случай, когда I(0)<=I*
+function F1(du, u, p, t)
+    du[1] = 0;
+    du[2] = - b*u[2];
+    du[3] = b*u[2];
 end
 
-
-function f2(t)
-    y = tan(fi)*t
-    return y
-end
-
-
-r0 = s/(n + 1)
-tetha = (0, 2*pi)
-
-
-prob = ODEProblem(f, r0, tetha)
+prob = ODEProblem(F1, x0, t)
 sol = solve(prob)
 
-t = collect(LinRange(0, 15, 1500))
-
-r1 = []
-tetha1 = []
-
-for i in t
-    push!(r1, sqrt(i^2 + f2(i)^2))
-    push!(tetha1, atan(f2(i)/i))
-end
-
-plot(sol, proj=:polar, label= "Катер")
-plot!(tetha1, r1, proj=:polar, label= "Лодка")
-
+plot(sol, label=["S(t)" "I(t)" "R(t)"], title="Первый случай")
 savefig("image1.png")
 
-r0 = s/(n - 1)
-tetha = (-pi, pi)
 
-prob = ODEProblem(f, r0, tetha)
+#ВТОРОЙ СЛУЧАЙ
+# случай, когда I(0)>I*
+function F2(du, u, p, t)
+    du[1] = - a*u[1] ;
+    du[2] = a*u[1] - b*u[2];
+    du[3] = b*u[2];
+end
+
+prob = ODEProblem(F2, x0, t)
 sol = solve(prob)
 
-
-plot(sol, proj=:polar, label= "Катер")
-plot!(tetha1, r1, proj=:polar, label= "Лодка")
-
+plot(sol, label=["S(t)" "I(t)" "R(t)"], title="Второй случай")
 savefig("image2.png")
 ```
 
-## Решение
-
-![траектории для случая 1 (Julia)](image/image1.png){ #fig:002 width=70% height=70% }
-
-![траектории для случая 2 (Julia)](image/image2.png){ #fig:004 width=70% height=70% }
-
-
-Точка пересечения графиков является точкой пересечения катера и лодки.
-
-Наблюдаем, что при погоне «по часовой стрелке» для достижения цели потребуется пройти меньшее расстояние.
-
 # Выводы
 
-Рассмотрели задачу о погоне. Провели анализ и вывод дифференциальных уравнений. Смоделировали ситуацию.
+В результате проделанной лабораторной работы мы познакомились с моделем эпидемии. 
+Проверили, как работает модель в различных ситуациях, показали динамику изменения числа людей в каждой из трех групп в каждом случае.
 
 # Список литературы
 
-1. [Задача о погоне](https://esystem.rudn.ru/pluginfile.php/2290141/mod_resource/content/2/Лабораторная%20работа%20№%201.pdf)
+1. [Модель эпидемии](https://hal.science/hal-02509142v4/file/epidemie_ru.pdf)
