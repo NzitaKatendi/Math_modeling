@@ -326,7 +326,7 @@ savefig("myplot.png")
 
 Случай 1 (рис. 1)
 
-![Случай 1](image/image1.png){#fig:002 width=70%}
+![Случай 1](image/image1.png){#fig:001 width=70%}
 
 Случай 2 (рис. 2)
 
@@ -334,7 +334,7 @@ savefig("myplot.png")
 
 Случай 3 (рис. 3)
 
-![Случай 3](image/image3.png){#fig:002 width=70%}
+![Случай 3](image/image3.png){#fig:003 width=70%}
 
 ---
 
