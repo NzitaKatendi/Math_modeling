@@ -187,7 +187,7 @@ run_lotka_volterra()
 
 В результаты мы получили следующие графики
 
-![Модель Лотки-Вольтерра](image/image1.png){#fig:002 width=70%}
+![Модель Лотки-Вольтерра](image/image1.png){#fig:001 width=70%}
 
 ![Стационарное состояние Julia](image/image2.png){#fig:002 width=70%}
 
