@@ -1,14 +1,43 @@
 ---
 ## Front matter
-lang: ru-RU
-title: 
-        Лабораторная работа 5
-subtitle: . Модель хищник-жертва и модель Лотки-Вольтерры
-author: Нзита Диатезилуа Катенди
-institute: RUDN University, Moscow, Russian Federation
-date: April 13^th 2024
+title: "Презентация по лабораторной работе № 5"
+subtitle: "Модель хищник-жертва и модель Лотки-Вольтерры"
+author: " Нзита Диатезилуа Катенди"
 
+## Generic otions
+lang: ru-RU
+
+## Formatting
+toc: false
+slide_level: 2
+theme: metropolis
+header-includes:
+- \metroset{progressbar=frametitle,sectionpage=progressbar,numbering=fraction}
+- '\makeatletter'
+- '\beamer@ignorenonframefalse'
+- '\makeatother'
+aspectratio: 43
+section-titles: true
 ---
+
+# Информация
+
+## Докладчик
+
+:::::::::::::: {.columns align=center}
+::: {.column width="70%"}
+
+  * Нзита Диатезилуа Катенди
+  * студент группы НКНбд-01-21
+  * Российский университет дружбы народов
+  * <https://github.com/NzitaKatendi/Math_modeling>
+
+:::
+::: {.column width="30%"}
+
+
+:::
+::::::::::::::
 
 # Цели работы
 
