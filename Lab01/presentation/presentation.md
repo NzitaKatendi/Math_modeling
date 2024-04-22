@@ -187,7 +187,7 @@ header-includes:
 
 ## Сброс ветки master
 
-![Поиск коммита перед конфликтом](image/image31.png){#fig:033 width=50%}
+![Поиск коммита перед конфликтом](image/image31.png){#fig:031 width=50%}
 
 ## Сброс ветки master
 
